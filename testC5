@@ -47,8 +47,37 @@ void testGameOver(Battleship* game) {
 
 //test case 4
 
-
+void testEnemyAITargeting(Battleship* game) {
+    game->enemyTurn();
+    bool validMove = false;
+    for (int i = 0; i < 10; i++) {
+        for (int j = 0; j < 10; j++) {
+            if (game->playerBoard[i][j]->beenHit()) {
+                validMove = true;
+                break;
+            }
+        }
+    }
+    if (validMove) {
+        std::cout << "Test 4: Success\n";
+    } else {
+        std::cout << "Test 4: Failed\n";
+    }
+}
 
 //test case 5
 
-
+void testShipHealthUpdates(Battleship* game) {
+    int x = 0, y = 0;
+    if (game->playerBoard[x][y]->getShip()) {
+        int initialHealth = game->playerBoard[x][y]->getShip()->getHealth();
+        game->fire(game->playerBoard, x, y);
+        if (game->playerBoard[x][y]->getShip()->getHealth() == initialHealth - 1) {
+            std::cout << "Test 5: Success\n";
+        } else {
+            std::cout << "Test 5: Failed\n";
+        }
+    } else {
+        std::cout << "Test 5: Failed (No ship at target)\n";
+    }
+}
