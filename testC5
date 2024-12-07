@@ -18,8 +18,37 @@ void testValidShipPlacement(Battleship* game) {
 
 //test case 2
 
+void testFireMechanism(Battleship* game) {
+    int x = 0, y = 0;
+    game->fire(game->playerBoard, x, y);
+    if (game->playerBoard[x][y]->beenHit()) {
+        std::cout << "Test 2: Success\n";
+    } else {
+        std::cout << "Test 2: Failed\n";
+    }
+}
+
 //test case 3
+
+void testGameOver(Battleship* game) {
+    for (int i = 0; i < 10; i++) {
+        for (int j = 0; j < 10; j++) {
+            if (game->enemyBoard[i][j]->getShip()) {
+                game->enemyBoard[i][j]->setHit(true);
+            }
+        }
+    }
+    if (game->isGameOver(game->enemyBoard)) {
+        std::cout << "Test 3: Success\n";
+    } else {
+        std::cout << "Test 3: Failed\n";
+    }
+}
 
 //test case 4
 
+
+
 //test case 5
+
+
