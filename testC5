@@ -52,8 +52,8 @@ void testGameOver(EnemyBoard* enemy) {
 //test case 4
 
 void testAITargetSelection(PlayerBoard* player) {
-    player->get(0, 0)->setHit(true);  // Mark a tile as hit
-    QString result = player->fire(1, 1); // AI fires on a new tile
+    player->get(0, 0)->setHit(true);  
+    QString result = player->fire(1, 1); 
     if (!player->get(0, 0)->beenHit() && (result == "X" || result == "O" || !result.isEmpty())) {
         std::cout << "Success\n";
     } else {
@@ -68,7 +68,7 @@ void testShipHealthUpdates(PlayerBoard* player) {
     if (player->get(x, y)->getShip() != nullptr) {
         Ship* ship = player->get(x, y)->getShip();
         int initialHealth = ship->getHealth();
-        player->fire(x, y);  // Fire on the ship
+        player->fire(x, y);  
         if (ship->getHealth() == initialHealth - 1) {
             std::cout << "Success\n";
         } else {
