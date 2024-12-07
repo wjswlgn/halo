@@ -1,83 +1,80 @@
 //test case 1
 
-void testValidShipPlacement(Battleship* game) {
+void testValidShipPlacement(PlayerBoard* player) {
     bool validPlacement = true;
     for (int i = 0; i < 10; i++) {
         for (int j = 0; j < 10; j++) {
-            if (game->playerBoard[i][j]->getShip() && game->playerBoard[i][j]->getShip()->getLength() < 0) {
-                validPlacement = false;
+            if (player->get(i, j)->getShip() != nullptr) {
+                Ship* ship = player->get(i, j)->getShip();
+                if (ship->getLength() <= 0) {
+                    validPlacement = false;
+                    break;
+                }
             }
         }
     }
     if (validPlacement) {
-        std::cout << "Test 1: Success\n";
+        std::cout << "Success\n";
     } else {
-        std::cout << "Test 1: Failed\n";
+        std::cout << "Failed\n";
     }
-}
+)
 
 //test case 2
 
-void testFireMechanism(Battleship* game) {
+void testFireOnEnemyBoard(EnemyBoard* enemy) {
     int x = 0, y = 0;
-    game->fire(game->playerBoard, x, y);
-    if (game->playerBoard[x][y]->beenHit()) {
-        std::cout << "Test 2: Success\n";
+    QString result = enemy->fire(x, y);
+    if (enemy->get(x, y)->beenHit() && (result == "X" || result == "O" || !result.isEmpty())) {
+        std::cout << "Success\n";
     } else {
-        std::cout << "Test 2: Failed\n";
+        std::cout << "Failed\n";
     }
 }
 
 //test case 3
 
-void testGameOver(Battleship* game) {
+void testGameOver(EnemyBoard* enemy) {
     for (int i = 0; i < 10; i++) {
         for (int j = 0; j < 10; j++) {
-            if (game->enemyBoard[i][j]->getShip()) {
-                game->enemyBoard[i][j]->setHit(true);
+            if (enemy->get(i, j)->getShip() != nullptr) {
+                enemy->get(i, j)->setHit(true);
             }
         }
     }
-    if (game->isGameOver(game->enemyBoard)) {
-        std::cout << "Test 3: Success\n";
+    if (enemy->isGameOver()) {
+        std::cout << "Success\n";
     } else {
-        std::cout << "Test 3: Failed\n";
+        std::cout << "Failed\n";
     }
-}
+)
 
 //test case 4
 
-void testEnemyAITargeting(Battleship* game) {
-    game->enemyTurn();
-    bool validMove = false;
-    for (int i = 0; i < 10; i++) {
-        for (int j = 0; j < 10; j++) {
-            if (game->playerBoard[i][j]->beenHit()) {
-                validMove = true;
-                break;
-            }
-        }
-    }
-    if (validMove) {
-        std::cout << "Test 4: Success\n";
+void testAITargetSelection(PlayerBoard* player) {
+    player->get(0, 0)->setHit(true);  // Mark a tile as hit
+    QString result = player->fire(1, 1); // AI fires on a new tile
+    if (!player->get(0, 0)->beenHit() && (result == "X" || result == "O" || !result.isEmpty())) {
+        std::cout << "Success\n";
     } else {
-        std::cout << "Test 4: Failed\n";
+        std::cout << "Failed\n";
     }
 }
 
 //test case 5
 
-void testShipHealthUpdates(Battleship* game) {
+void testShipHealthUpdates(PlayerBoard* player) {
     int x = 0, y = 0;
-    if (game->playerBoard[x][y]->getShip()) {
-        int initialHealth = game->playerBoard[x][y]->getShip()->getHealth();
-        game->fire(game->playerBoard, x, y);
-        if (game->playerBoard[x][y]->getShip()->getHealth() == initialHealth - 1) {
-            std::cout << "Test 5: Success\n";
+    if (player->get(x, y)->getShip() != nullptr) {
+        Ship* ship = player->get(x, y)->getShip();
+        int initialHealth = ship->getHealth();
+        player->fire(x, y);  // Fire on the ship
+        if (ship->getHealth() == initialHealth - 1) {
+            std::cout << "Success\n";
         } else {
-            std::cout << "Test 5: Failed\n";
+            std::cout << "Failed\n";
         }
     } else {
-        std::cout << "Test 5: Failed (No ship at target)\n";
+        std::cout << "Failed (No ship at target)\n";
     }
-}
+)
